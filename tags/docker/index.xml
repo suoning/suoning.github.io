@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Docker on B族维生素</title>
+    <link>https://suoning.github.io/tags/docker/</link>
+    <description>Recent content in Docker on B族维生素</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 25 Jan 2021 00:00:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://suoning.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>boot2docker</title>
+      <link>https://suoning.github.io/posts/boot2docker/</link>
+      <pubDate>Mon, 25 Jan 2021 00:00:00 +0800</pubDate>
+      
+      <guid>https://suoning.github.io/posts/boot2docker/</guid>
+      <description>为什么使用 boot2docker 在 Ubuntu 等环境，我们可以一键安装Docker(服务端、客户端)，但是在 Mac、Windows 环境却无法直接安装 Docker 服务端。这种情况下，我们有3种选择：
+ 在虚拟机安装 CentOS 或者 Ubuntu：比较费时。 使用 docker-for-mac 或者 docker-for-windows (仅Windows10专业版支持)客户端，这种体积会比较大，一般300M左右。可配置性不高，出了问题不好排查。 使用 boot2docker，配合 docker-machine 客户端，轻松部署Docker环境。需要提前安装VirtualBox(约90M)。  安装 下载并安装 VirtualBox https://www.virtualbox.org/wiki/Downloads
+https://www.virtualbox.org/wiki/Download_Old_Builds_6_0
+https://download.virtualbox.org/virtualbox/6.0.10/VirtualBox-6.0.10-132072-OSX.dmg
+下载 boot2docker.iso https://github.com/boot2docker/boot2docker/releases
+https://github.com/boot2docker/boot2docker/releases?after=v19.03.3-beta2
+https://github.com/boot2docker/boot2docker/releases/download/v19.03.1/boot2docker.iso
+下载并安装 docker-machine 1  brew install docker-machine   1 2  curl -L https://github.com/docker/machine/releases/download/v0.14.0/docker-machine-`uname -s`-`uname -m` &amp;gt;/usr/local/bin/docker-machine &amp;amp;&amp;amp; \  chmod +x /usr/local/bin/docker-machine   1 2 3  if [[ ! -d &amp;#34;$HOME/bin&amp;#34; ]]; then mkdir -p &amp;#34;$HOME/bin&amp;#34;; fi &amp;amp;&amp;amp; \ curl -L https://github.</description>
+    </item>
+    
+    <item>
+      <title>Docker使用</title>
+      <link>https://suoning.github.io/posts/docker-use/</link>
+      <pubDate>Wed, 20 Jan 2021 00:00:00 +0800</pubDate>
+      
+      <guid>https://suoning.github.io/posts/docker-use/</guid>
+      <description>安装 Homebrew 1  $ brew install --cask --appdir=/Applications docker   检查版本
+1 2  ~ docker -v Docker version 20.10.2, build 2291f61   使用 拉取镜像 1 2 3  ~ docker pull centos ~ docker pull centos:latest ~ docker pull centos:6.8   1  ~ docker search centos    NAME: 镜像仓库源的名称 DESCRIPTION: 镜像的描述 OFFICIAL: 是否 docker 官方发布 stars: 类似 Github 里面的 star，表示点赞、喜欢的意思。 AUTOMATED: 自动构建。  查看镜像 1  ~ docker images    **REPOSITORY：**表示镜像的仓库源 **TAG：**镜像的标签 **IMAGE ID：**镜像ID **CREATED：**镜像创建时间 **SIZE：**镜像大小  删除镜像 1  ~ docker rmi 69085eea740e   创建镜像 1  ~ docker commit -m=&amp;#34;has update&amp;#34; ae6fb5dca553 my:1.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang on B族维生素</title>
+    <link>https://suoning.github.io/tags/golang/</link>
+    <description>Recent content in Golang on B族维生素</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 09 Jan 2021 13:08:43 +0800</lastBuildDate>
+    
+	<atom:link href="https://suoning.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>My First Post</title>
+      <link>https://suoning.github.io/posts/my-first-post/</link>
+      <pubDate>Sat, 09 Jan 2021 13:08:43 +0800</pubDate>
+      
+      <guid>https://suoning.github.io/posts/my-first-post/</guid>
+      <description>hugo --theme=maupassant --baseUrl=&amp;quot;https://suoning.github.io/&amp;quot; cd public git init git remote add origin https://github.com/suoning/suoning.github.io.git git add -A git commit -m &amp;quot;first commit&amp;quot; git push --set-upstream origin master 一级标题 二级标题 三级标题 四级标题 五级标题 六级标题 JavaScript 在控制台输出消息的语法是 console.log(message)。
+class Program { static void Main(string[] args) { Console.WriteLine(&amp;quot;Hello World!&amp;quot;); } }  https://suoning.cnblogs.com/
+百度一下，你就知道 
+ …or create a new repository on the command line
+echo &amp;quot;# suoning.github.io&amp;quot; &amp;gt;&amp;gt; README.md git init git add README.md git commit -m &amp;quot;first commit&amp;quot; git branch -M main git remote add origin https://github.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>boot2docker | B族维生素</title>
+    <meta property="og:title" content="boot2docker - B族维生素">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2021-01-25T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2021-01-25T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="收藏不迷路！">
+    <meta name="description" content="boot2docker">
+        
+    <meta name="author" content="Nick">
+    <meta property="og:url" content="https://suoning.github.io/posts/boot2docker/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://suoning.github.io/">
+                        B族维生素
+                    </a>
+                
+                <p class="description">收藏不迷路！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://suoning.github.io/">首页</a>
+                    
+                    <a  href="https://suoning.github.io/archives" title="归档">归档</a>
+                    
+                    <a  href="https://suoning.github.io/about" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#下载并安装-virtualbox">下载并安装 VirtualBox</a></li>
+    <li><a href="#下载-boot2dockeriso">下载 boot2docker.iso</a></li>
+    <li><a href="#下载并安装-docker-machine">下载并安装 docker-machine</a></li>
+    <li><a href="#使用docker-machine搭建docker">使用docker-machine搭建docker</a></li>
+    <li><a href="#docker-machine-命令参数说明">docker-machine 命令参数说明</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if(leftPos<220){
+                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">boot2docker</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2021年1月25日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/docker'>Docker</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
+        </div>
+        
+        
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <h1 id="为什么使用-boot2docker">为什么使用 boot2docker</h1>
+<p>在 <code>Ubuntu</code> 等环境，我们可以一键安装<code>Docker</code>(服务端、客户端)，但是在 Mac、Windows 环境却无法直接安装 Docker 服务端。这种情况下，我们有3种选择：</p>
+<ol>
+<li>在虚拟机安装 <code>CentOS</code> 或者 <code>Ubuntu</code>：比较费时。</li>
+<li>使用 <code>docker-for-mac</code> 或者 <code>docker-for-windows</code> (仅<code>Windows10</code>专业版支持)客户端，这种体积会比较大，一般300M左右。可配置性不高，出了问题不好排查。</li>
+<li>使用 <code>boot2docker</code>，配合 <code>docker-machine</code> 客户端，轻松部署<code>Docker</code>环境。需要提前安装<code>VirtualBox</code>(约90M)。</li>
+</ol>
+<h1 id="安装">安装</h1>
+<h2 id="下载并安装-virtualbox">下载并安装 VirtualBox</h2>
+<p><a href="https://www.virtualbox.org/wiki/Downloads">https://www.virtualbox.org/wiki/Downloads</a></p>
+<p><a href="https://www.virtualbox.org/wiki/Download_Old_Builds_6_0">https://www.virtualbox.org/wiki/Download_Old_Builds_6_0</a></p>
+<p><a href="https://download.virtualbox.org/virtualbox/6.0.10/VirtualBox-6.0.10-132072-OSX.dmg">https://download.virtualbox.org/virtualbox/6.0.10/VirtualBox-6.0.10-132072-OSX.dmg</a></p>
+<h2 id="下载-boot2dockeriso">下载 boot2docker.iso</h2>
+<p><a href="https://github.com/boot2docker/boot2docker/releases">https://github.com/boot2docker/boot2docker/releases</a></p>
+<p><a href="https://github.com/boot2docker/boot2docker/releases?after=v19.03.3-beta2">https://github.com/boot2docker/boot2docker/releases?after=v19.03.3-beta2</a></p>
+<p><a href="https://github.com/boot2docker/boot2docker/releases/download/v19.03.1/boot2docker.iso">https://github.com/boot2docker/boot2docker/releases/download/v19.03.1/boot2docker.iso</a></p>
+<h2 id="下载并安装-docker-machine">下载并安装 docker-machine</h2>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">brew install docker-machine 
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl -L https://github.com/docker/machine/releases/download/v0.14.0/docker-machine-<span style="color:#d14">`</span>uname -s<span style="color:#d14">`</span>-<span style="color:#d14">`</span>uname -m<span style="color:#d14">`</span> &gt;/usr/local/bin/docker-machine <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#d14">\
+</span><span style="color:#d14"></span>  chmod +x /usr/local/bin/docker-machine
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#000;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">[[</span> ! -d <span style="color:#d14">&#34;</span><span style="color:#008080">$HOME</span><span style="color:#d14">/bin&#34;</span> <span style="color:#000;font-weight:bold">]]</span>; <span style="color:#000;font-weight:bold">then</span> mkdir -p <span style="color:#d14">&#34;</span><span style="color:#008080">$HOME</span><span style="color:#d14">/bin&#34;</span>; <span style="color:#000;font-weight:bold">fi</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#d14">\
+</span><span style="color:#d14"></span>curl -L https://github.com/docker/machine/releases/download/v0.14.0/docker-machine-Windows-x86_64.exe &gt; <span style="color:#d14">&#34;</span><span style="color:#008080">$HOME</span><span style="color:#d14">/bin/docker-machine.exe&#34;</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#d14">\
+</span><span style="color:#d14"></span>chmod +x <span style="color:#d14">&#34;</span><span style="color:#008080">$HOME</span><span style="color:#d14">/bin/docker-machine.exe&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="使用docker-machine搭建docker">使用docker-machine搭建docker</h2>
+<p>docker-machine 其实是辅助我们一键在virtualbox 里创建好了docker。</p>
+<p>打开Bash命令行：</p>
+<pre><code>docker-machine create --driver virtualbox default
+</code></pre><div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker-machine create --driver virtualbox --virtualbox-boot2docker-url<span style="color:#000;font-weight:bold">=</span>/boot2docker.iso default
+</code></pre></td></tr></table>
+</div>
+</div><p><code>--virtualbox-boot2docker-url</code>可以手动指定boot2docker.iso位置</p>
+<p>如果提示：<code>This computer doesn't have VT-X/AMD-v enabled. Enabling it in the BIOS is mandatory</code>，可以：
+a. 在管理员模式下的命令提示符中输入：bcdedit /set hypervisorlaunchtype Auto，然后重启电脑。
+b. 如果上述无效，可以加参数 <code>--virtualbox-no-vtx-check</code> 忽略检查。</p>
+<p>如果没有出错，就可以进入这个虚拟机里面的Docker Linux里了：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">➜  ~ docker-machine ls
+NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER      ERRORS
+default   -        virtualbox   Running   tcp://192.168.99.100:2376           v19.03.12
+➜  ~
+➜  ~
+➜  ~ docker-machine ssh default
+   <span style="color:#000;font-weight:bold">(</span> <span style="color:#d14">&#39;&gt;&#39;</span><span style="color:#000;font-weight:bold">)</span>
+  /<span style="color:#000;font-weight:bold">)</span> TC <span style="color:#000;font-weight:bold">(</span><span style="color:#d14">\ </span>  Core is distributed with ABSOLUTELY NO WARRANTY.
+ <span style="color:#000;font-weight:bold">(</span>/-_--_-<span style="color:#d14">\)</span>           www.tinycorelinux.net
+
+docker@default:~$
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="docker-machine-命令参数说明">docker-machine 命令参数说明</h2>
+<ul>
+<li><strong>active</strong>：查看当前激活状态的 Docker 主机</li>
+<li><strong>config</strong>：查看当前激活状态 Docker 主机的连接信息。</li>
+<li><strong>creat</strong>：创建 Docker 主机</li>
+<li><strong>env</strong>：显示连接到某个主机需要的环境变量</li>
+<li><strong>inspect</strong>： 以 json 格式输出指定Docker的详细信息</li>
+<li><strong>ip</strong>： 获取指定 Docker 主机的地址</li>
+<li><strong>kill</strong>： 直接杀死指定的 Docker 主机</li>
+<li><strong>ls</strong>： 列出所有的管理主机</li>
+<li><strong>provision</strong>： 重新配置指定主机</li>
+<li><strong>regenerate-certs</strong>： 为某个主机重新生成 TLS 信息</li>
+<li><strong>restart</strong>： 重启指定的主机</li>
+<li><strong>rm</strong>： 删除某台 Docker 主机，对应的虚拟机也会被删除</li>
+<li><strong>ssh</strong>： 通过 SSH 连接到主机上，执行命令</li>
+<li><strong>scp</strong>： 在 Docker 主机之间以及 Docker 主机和本地主机之间通过 scp 远程复制数据</li>
+<li><strong>mount</strong>： 使用 SSHFS 从计算机装载或卸载目录</li>
+<li><strong>start</strong>： 启动一个指定的 Docker 主机，如果对象是个虚拟机，该虚拟机将被启动</li>
+<li><strong>status</strong>： 获取指定 Docker 主机的状态(包括：Running、Paused、Saved、Stopped、Stopping、Starting、Error)等</li>
+<li><strong>stop</strong>： 停止一个指定的 Docker 主机</li>
+<li><strong>upgrade</strong>： 将一个指定主机的 Docker 版本更新为最新</li>
+<li><strong>url</strong>： 获取指定 Docker 主机的监听 URL</li>
+<li><strong>version</strong>： 显示 Docker Machine 的版本或者主机 Docker 版本</li>
+<li><strong>help</strong>： 显示帮助信息</li>
+</ul>
+
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/posts/docker-use/">Docker使用</a></li>
+        
+        <li><a href="/posts/hash-mod-primenumber/">散列函数中求模运算为什么要使用素数</a></li>
+        
+        <li><a href="/posts/my-first-post/">My First Post</a></li>
+        
+        <li><a href="/about/">关于我</a></li>
+        
+        <li><a href="/archives/">归档</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/docker'>Docker</a></li>
+                
+                <li><a href='/tags/boot2docker'>boot2docker</a></li>
+                
+                <li><a href='/tags/docker-machine'>docker-machine</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "suoning/suoning.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="https://suoning.github.io/">B族维生素 By Nick</a>
+        
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GA ID', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='https://suoning.github.io/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://suoning.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://suoning.github.io/posts/boot2docker/" title="boot2docker">boot2docker</a>
+    </li>
+    
+    <li>
+        <a href="https://suoning.github.io/posts/docker-use/" title="Docker使用">Docker使用</a>
+    </li>
+    
+    <li>
+        <a href="https://suoning.github.io/posts/hash-mod-primenumber/" title="散列函数中求模运算为什么要使用素数">散列函数中求模运算为什么要使用素数</a>
+    </li>
+    
+    <li>
+        <a href="https://suoning.github.io/posts/my-first-post/" title="My First Post">My First Post</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://suoning.github.io/categories/docker/">Docker (2)</a></li>
+    
+    <li><a href="https://suoning.github.io/categories/lets-golang/">Let&#39;s Golang (1)</a></li>
+    
+    <li><a href="https://suoning.github.io/categories/%E5%85%B6%E4%BB%96/">其他 (1)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://suoning.github.io/tags/boot2docker/">boot2docker</a>
+    
+    <a href="https://suoning.github.io/tags/docker/">Docker</a>
+    
+    <a href="https://suoning.github.io/tags/docker-machine/">docker-machine</a>
+    
+    <a href="https://suoning.github.io/tags/go/">Go</a>
+    
+    <a href="https://suoning.github.io/tags/golang/">Golang</a>
+    
+    <a href="https://suoning.github.io/tags/%E7%B4%A0%E6%95%B0%E5%8F%96%E6%A8%A1/">素数取模</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://suoning.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

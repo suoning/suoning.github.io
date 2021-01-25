@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker-machine on B族维生素</title>
+    <link>https://suoning.github.io/tags/docker-machine/</link>
+    <description>Recent content in docker-machine on B族维生素</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 25 Jan 2021 00:00:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://suoning.github.io/tags/docker-machine/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>boot2docker</title>
+      <link>https://suoning.github.io/posts/boot2docker/</link>
+      <pubDate>Mon, 25 Jan 2021 00:00:00 +0800</pubDate>
+      
+      <guid>https://suoning.github.io/posts/boot2docker/</guid>
+      <description>为什么使用 boot2docker 在 Ubuntu 等环境，我们可以一键安装Docker(服务端、客户端)，但是在 Mac、Windows 环境却无法直接安装 Docker 服务端。这种情况下，我们有3种选择：
+ 在虚拟机安装 CentOS 或者 Ubuntu：比较费时。 使用 docker-for-mac 或者 docker-for-windows (仅Windows10专业版支持)客户端，这种体积会比较大，一般300M左右。可配置性不高，出了问题不好排查。 使用 boot2docker，配合 docker-machine 客户端，轻松部署Docker环境。需要提前安装VirtualBox(约90M)。  安装 下载并安装 VirtualBox https://www.virtualbox.org/wiki/Downloads
+https://www.virtualbox.org/wiki/Download_Old_Builds_6_0
+https://download.virtualbox.org/virtualbox/6.0.10/VirtualBox-6.0.10-132072-OSX.dmg
+下载 boot2docker.iso https://github.com/boot2docker/boot2docker/releases
+https://github.com/boot2docker/boot2docker/releases?after=v19.03.3-beta2
+https://github.com/boot2docker/boot2docker/releases/download/v19.03.1/boot2docker.iso
+下载并安装 docker-machine 1  brew install docker-machine   1 2  curl -L https://github.com/docker/machine/releases/download/v0.14.0/docker-machine-`uname -s`-`uname -m` &amp;gt;/usr/local/bin/docker-machine &amp;amp;&amp;amp; \  chmod +x /usr/local/bin/docker-machine   1 2 3  if [[ ! -d &amp;#34;$HOME/bin&amp;#34; ]]; then mkdir -p &amp;#34;$HOME/bin&amp;#34;; fi &amp;amp;&amp;amp; \ curl -L https://github.</description>
+    </item>
+    
+  </channel>
+</rss>

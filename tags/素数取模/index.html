@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>素数取模 | B族维生素</title>
+    <meta property="og:title" content="素数取模 - B族维生素">
+    <meta property="og:type" content="article">
+        
+        
+    <meta name="Keywords" content="收藏不迷路！">
+    <meta name="description" content="素数取模">
+        
+    <meta name="author" content="Nick">
+    <meta property="og:url" content="https://suoning.github.io/tags/%E7%B4%A0%E6%95%B0%E5%8F%96%E6%A8%A1/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <link rel="alternate" type="application/rss+xml+xml" href="https://suoning.github.io/tags/%E7%B4%A0%E6%95%B0%E5%8F%96%E6%A8%A1/index.xml" title="B族维生素" />
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://suoning.github.io/">
+                        B族维生素
+                    </a>
+                
+                <p class="description">收藏不迷路！</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://suoning.github.io/">首页</a>
+                    
+                    <a  href="https://suoning.github.io/archives" title="归档">归档</a>
+                    
+                    <a  href="https://suoning.github.io/about" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <h3 class="archive-title">
+        包含标签
+        <span class="keyword">素数取模</span>
+        的文章
+    </h3>
+    
+
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://suoning.github.io/posts/hash-mod-primenumber/">散列函数中求模运算为什么要使用素数</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2021年1月12日
+        </date>
+        
+        <div class="post-meta meta-category">
+            |
+            
+            <a href='/categories/%E5%85%B6%E4%BB%96'>其他</a>
+            
+        </div>
+        
+        <div class="post-content">
+            一.散列函数 散列函数即是将元素映射到对应槽位置的方法。
+一个好的散列函数应该是尽可能的将元素均匀的散列到 m 个槽位中的一个。
+二.除法散列法 散列函数的实现有很多种，其中一种常见的散列函数即 除法散列法，h(k) = k mod m，通过取 k 除以 m 的余数，将关键字 k 映射到 m 个槽上。由于只需做一次除法操作，所以除法散列法是非常快的。
+当我们使用除法散列法时，m 的选择很重要。《算法导论》一书中，建议我们使用一个不太接近 2 的整数幂的素数，作为 m 的选择。
+那么在求模运算中为什么建议要使用素数呢？这是因为使用素数可以让元素取模后的值，更不容易发生冲撞。至于是为什么，我们在下面探讨。
+三.对素数取模的好处 前面说道，对素数取模，结果更不容易发生冲撞，即结果可以更均匀的散列到不同的槽位中。那么原理是怎么样的呢？
+合数和素数：合数即有两个以上的因数，素数（质数）即只有两个因数，分别为 1 和其本身。
+如果对一个合数取模，那么对其某个因数取模，结果可能仍然一致。例如 10 对 8 取模，结果为 2，对 4 取模，结果也为 2。而我们对一个素数取模，由于素数只有 1 和其本身两个素数，即不可能出现上述情形。
+四.实例分析 1. 数列A：1，3，5，7，9，11，13，15 假设选取 8 取模，结果为：
+   余数 0 1 2 3 4 5 6 7     数值  1  3  5  7   数值  9  11  13  15    每个数间隔 2，2 是 8 的一个因数，容易发生冲突，不均匀分布。……
+            <p class="readmore"><a href="https://suoning.github.io/posts/hash-mod-primenumber/">阅读全文</a></p>
+        </div>
+    </article>
+    
+
+    
+
+
+
+
+
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="https://suoning.github.io/">B族维生素 By Nick</a>
+        
+    </div>
+</footer>
+
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'GA ID', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='https://suoning.github.io/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://suoning.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://suoning.github.io/posts/boot2docker/" title="boot2docker">boot2docker</a>
+    </li>
+    
+    <li>
+        <a href="https://suoning.github.io/posts/docker-use/" title="Docker使用">Docker使用</a>
+    </li>
+    
+    <li>
+        <a href="https://suoning.github.io/posts/hash-mod-primenumber/" title="散列函数中求模运算为什么要使用素数">散列函数中求模运算为什么要使用素数</a>
+    </li>
+    
+    <li>
+        <a href="https://suoning.github.io/posts/my-first-post/" title="My First Post">My First Post</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://suoning.github.io/categories/docker/">Docker (2)</a></li>
+    
+    <li><a href="https://suoning.github.io/categories/lets-golang/">Let&#39;s Golang (1)</a></li>
+    
+    <li><a href="https://suoning.github.io/categories/%E5%85%B6%E4%BB%96/">其他 (1)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://suoning.github.io/tags/boot2docker/">boot2docker</a>
+    
+    <a href="https://suoning.github.io/tags/docker/">Docker</a>
+    
+    <a href="https://suoning.github.io/tags/docker-machine/">docker-machine</a>
+    
+    <a href="https://suoning.github.io/tags/go/">Go</a>
+    
+    <a href="https://suoning.github.io/tags/golang/">Golang</a>
+    
+    <a href="https://suoning.github.io/tags/%E7%B4%A0%E6%95%B0%E5%8F%96%E6%A8%A1/">素数取模</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://suoning.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
