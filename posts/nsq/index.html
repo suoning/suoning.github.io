@@ -9,20 +9,20 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
     
 
-    <title>boot2docker | B族维生素</title>
-    <meta property="og:title" content="boot2docker - B族维生素">
+    <title>Nsq | B族维生素</title>
+    <meta property="og:title" content="Nsq - B族维生素">
     <meta property="og:type" content="article">
         
-    <meta property="article:published_time" content='2021-01-25T00:00:00&#43;08:00'>
+    <meta property="article:published_time" content='2021-02-02T00:00:00&#43;08:00'>
         
         
-    <meta property="article:modified_time" content='2021-01-25T00:00:00&#43;08:00'>
+    <meta property="article:modified_time" content='2021-02-02T00:00:00&#43;08:00'>
         
     <meta name="Keywords" content="收藏不迷路！">
-    <meta name="description" content="boot2docker">
+    <meta name="description" content="Nsq">
         
     <meta name="author" content="Nick">
-    <meta property="og:url" content="https://suoning.github.io/posts/boot2docker/">
+    <meta property="og:url" content="https://suoning.github.io/posts/nsq/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
@@ -137,11 +137,26 @@
     <div class="post-toc-content">
         <nav id="TableOfContents">
   <ul>
-    <li><a href="#下载并安装-virtualbox">下载并安装 VirtualBox</a></li>
-    <li><a href="#下载-boot2dockeriso">下载 boot2docker.iso</a></li>
-    <li><a href="#下载并安装-docker-machine">下载并安装 docker-machine</a></li>
-    <li><a href="#使用docker-machine搭建docker">使用docker-machine搭建docker</a></li>
-    <li><a href="#docker-machine-命令参数说明">docker-machine 命令参数说明</a></li>
+    <li><a href="#简介">简介</a></li>
+    <li><a href="#组件">组件</a>
+      <ul>
+        <li><a href="#nsqd">nsqd</a></li>
+        <li><a href="#channel">channel</a></li>
+        <li><a href="#nsqlookupd">nsqlookupd</a></li>
+        <li><a href="#nsqadmin">nsqadmin</a></li>
+      </ul>
+    </li>
+    <li><a href="#消息">消息</a>
+      <ul>
+        <li><a href="#消息至少被投递一次">消息至少被投递一次</a></li>
+        <li><a href="#重试次数">重试次数</a></li>
+        <li><a href="#消息无序性">消息无序性</a></li>
+        <li><a href="#push">push</a></li>
+        <li><a href="#流控">流控</a></li>
+        <li><a href="#持久化">持久化</a></li>
+      </ul>
+    </li>
+    <li><a href="#集群">集群</a></li>
   </ul>
 </nav>
     </div>
@@ -175,16 +190,16 @@
 </script>
     <article class="post">
         <header>
-            <h1 class="post-title">boot2docker</h1>
+            <h1 class="post-title">Nsq</h1>
         </header>
         <date class="post-meta meta-date">
-            2021年1月25日
+            2021年2月2日
         </date>
         
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='/categories/docker'>Docker</a></span>
+            <span class="meta-category"><a href='/categories/mq'>MQ</a></span>
             
         </div>
         
@@ -202,71 +217,35 @@
         </div>
         
         <div class="post-content">
-            <h1 id="为什么使用-boot2docker">为什么使用 boot2docker</h1>
-<p>在 <code>Ubuntu</code> 等环境，我们可以一键安装<code>Docker</code>(服务端、客户端)，但是在 Mac、Windows 环境却无法直接安装 Docker 服务端。这种情况下，我们有3种选择：</p>
-<ol>
-<li>在虚拟机安装 <code>CentOS</code> 或者 <code>Ubuntu</code>：比较费时。</li>
-<li>使用 <code>docker-for-mac</code> 或者 <code>docker-for-windows</code> (仅<code>Windows10</code>专业版支持)客户端，这种体积会比较大，一般300M左右。可配置性不高，出了问题不好排查。</li>
-<li>使用 <code>boot2docker</code>，配合 <code>docker-machine</code> 客户端，轻松部署<code>Docker</code>环境。需要提前安装<code>VirtualBox</code>(约90M)。</li>
-</ol>
-<h1 id="安装">安装</h1>
-<h2 id="下载并安装-virtualbox">下载并安装 VirtualBox</h2>
-<p><a href="https://www.virtualbox.org/wiki/Downloads">https://www.virtualbox.org/wiki/Downloads</a></p>
-<p><a href="https://www.virtualbox.org/wiki/Download_Old_Builds_6_0">https://www.virtualbox.org/wiki/Download_Old_Builds_6_0</a></p>
-<p><a href="https://download.virtualbox.org/virtualbox/6.0.10/VirtualBox-6.0.10-132072-OSX.dmg">https://download.virtualbox.org/virtualbox/6.0.10/VirtualBox-6.0.10-132072-OSX.dmg</a></p>
-<h2 id="下载-boot2dockeriso">下载 boot2docker.iso</h2>
-<p><a href="https://github.com/boot2docker/boot2docker/releases">https://github.com/boot2docker/boot2docker/releases</a></p>
-<p><a href="https://github.com/boot2docker/boot2docker/releases?after=v19.03.3-beta2">https://github.com/boot2docker/boot2docker/releases?after=v19.03.3-beta2</a></p>
-<p><a href="https://github.com/boot2docker/boot2docker/releases/download/v19.03.1/boot2docker.iso">https://github.com/boot2docker/boot2docker/releases/download/v19.03.1/boot2docker.iso</a></p>
-<h2 id="下载并安装-docker-machine">下载并安装 docker-machine</h2>
+            <h2 id="简介">简介</h2>
+<p>NSQ是一个基于Go语言的分布式实时消息平台</p>
+<p>具有分布式、去中心化的拓扑结构，支持无限水平扩展。</p>
+<p>无单点故障、故障容错、高可用性以及能够保证消息的可靠传递的特征。</p>
+<p>容易配置和部署, 支持众多的消息协议。</p>
+<p>支持多种客户端，协议简单。</p>
+<h2 id="组件">组件</h2>
+<h3 id="nsqd">nsqd</h3>
+<p>一个负责接收、排队、转发消息到客户端的守护进程</p>
+<h3 id="channel">channel</h3>
+<p>消费者组（Comsumer Group）的概念。消费者组是Kafka里提到的，在Nsq，对应的术语是channel</p>
+<p>当nsq收到消息时，会给每个channel复制一份消息，然后channel再给对应的消费者组，推送一条消息，默认轮询</p>
+<p>
+        <img class="mx-auto" alt="" src="https://f.cloud.github.com/assets/187441/1700696/f1434dc8-6029-11e3-8a66-18ca4ea10aca.gif" />   
+    </p>
+<p>图中，nsq上有一个叫”clicks“的topic，”clicks“下面有三条channel，也就是三个消费者组，其中channel名称为”metrics“的，有三个实例。消息A来到nsq后，被复制到三条channel，接着，在metrics上的那个A，被推送到了第二个实例上。接着，又来了一个叫B的消息，这一次，B被推送给了第一个实例进行处理。</p>
+<h3 id="nsqlookupd">nsqlookupd</h3>
+<p>管理拓扑信息, 用于收集nsqd上报的topic和channel,并提供最终一致性的发现服务的守护进程</p>
+<p>nsqlookup提供了类似于etcd、zookeeper一样的kv存储服务，里面记录了topic下面都有哪些nsq。</p>
+<p>nsqlookup提供了一个<code>/lookup</code>接口，比如你想知道哪些nsq上面，有topic为test的消息，那么只需要调一下：</p>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">brew install docker-machine 
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl <span style="color:#d14">&#39;http://127.0.0.1:8606/lookup?topic=test&#39;</span>
 </code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl -L https://github.com/docker/machine/releases/download/v0.14.0/docker-machine-<span style="color:#d14">`</span>uname -s<span style="color:#d14">`</span>-<span style="color:#d14">`</span>uname -m<span style="color:#d14">`</span> &gt;/usr/local/bin/docker-machine <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#d14">\
-</span><span style="color:#d14"></span>  chmod +x /usr/local/bin/docker-machine
-</code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#000;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">[[</span> ! -d <span style="color:#d14">&#34;</span><span style="color:#008080">$HOME</span><span style="color:#d14">/bin&#34;</span> <span style="color:#000;font-weight:bold">]]</span>; <span style="color:#000;font-weight:bold">then</span> mkdir -p <span style="color:#d14">&#34;</span><span style="color:#008080">$HOME</span><span style="color:#d14">/bin&#34;</span>; <span style="color:#000;font-weight:bold">fi</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#d14">\
-</span><span style="color:#d14"></span>curl -L https://github.com/docker/machine/releases/download/v0.14.0/docker-machine-Windows-x86_64.exe &gt; <span style="color:#d14">&#34;</span><span style="color:#008080">$HOME</span><span style="color:#d14">/bin/docker-machine.exe&#34;</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#d14">\
-</span><span style="color:#d14"></span>chmod +x <span style="color:#d14">&#34;</span><span style="color:#008080">$HOME</span><span style="color:#d14">/bin/docker-machine.exe&#34;</span>
-</code></pre></td></tr></table>
-</div>
-</div><h2 id="使用docker-machine搭建docker">使用docker-machine搭建docker</h2>
-<p>docker-machine 其实是辅助我们一键在virtualbox 里创建好了docker。</p>
-<p>打开Bash命令行：</p>
-<pre><code>docker-machine create --driver virtualbox default
-</code></pre><div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker-machine create --driver virtualbox --virtualbox-boot2docker-url<span style="color:#000;font-weight:bold">=</span>/boot2docker.iso default
-</code></pre></td></tr></table>
-</div>
-</div><p><code>--virtualbox-boot2docker-url</code>可以手动指定boot2docker.iso位置</p>
-<p>如果提示：<code>This computer doesn't have VT-X/AMD-v enabled. Enabling it in the BIOS is mandatory</code>，可以：
-a. 在管理员模式下的命令提示符中输入：bcdedit /set hypervisorlaunchtype Auto，然后重启电脑。
-b. 如果上述无效，可以加参数 <code>--virtualbox-no-vtx-check</code> 忽略检查。</p>
-<p>如果没有出错，就可以进入这个虚拟机里面的Docker Linux里了：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
@@ -279,46 +258,57 @@ b. 如果上述无效，可以加参数 <code>--virtualbox-no-vtx-check</code> �
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">➜  ~ docker-machine ls
-NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER      ERRORS
-default   -        virtualbox   Running   tcp://192.168.99.100:2376           v19.03.12
-➜  ~
-➜  ~
-➜  ~ docker-machine ssh default
-   <span style="color:#000;font-weight:bold">(</span> <span style="color:#d14">&#39;&gt;&#39;</span><span style="color:#000;font-weight:bold">)</span>
-  /<span style="color:#000;font-weight:bold">)</span> TC <span style="color:#000;font-weight:bold">(</span><span style="color:#d14">\ </span>  Core is distributed with ABSOLUTELY NO WARRANTY.
- <span style="color:#000;font-weight:bold">(</span>/-_--_-<span style="color:#d14">\)</span>           www.tinycorelinux.net
-
-docker@default:~$
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#000080">&#34;channels&#34;</span>:[
+        <span style="color:#d14">&#34;nsq_***.com&#34;</span>
+    ],
+    <span style="color:#000080">&#34;producers&#34;</span>:[
+        {
+            <span style="color:#000080">&#34;remote_address&#34;</span>:<span style="color:#d14">&#34;127.0.0.1:42362&#34;</span>,
+            <span style="color:#000080">&#34;hostname&#34;</span>:<span style="color:#d14">&#34;***.com&#34;</span>,
+            <span style="color:#000080">&#34;broadcast_address&#34;</span>:<span style="color:#d14">&#34;***.com&#34;</span>,
+            <span style="color:#000080">&#34;tcp_port&#34;</span>:<span style="color:#099">8602</span>,
+            <span style="color:#000080">&#34;http_port&#34;</span>:<span style="color:#099">8603</span>,
+            <span style="color:#000080">&#34;version&#34;</span>:<span style="color:#d14">&#34;1.1.0&#34;</span>
+        }
+    ]
+}
 </code></pre></td></tr></table>
 </div>
-</div><h2 id="docker-machine-命令参数说明">docker-machine 命令参数说明</h2>
-<ul>
-<li><strong>active</strong>：查看当前激活状态的 Docker 主机</li>
-<li><strong>config</strong>：查看当前激活状态 Docker 主机的连接信息。</li>
-<li><strong>creat</strong>：创建 Docker 主机</li>
-<li><strong>env</strong>：显示连接到某个主机需要的环境变量</li>
-<li><strong>inspect</strong>： 以 json 格式输出指定Docker的详细信息</li>
-<li><strong>ip</strong>： 获取指定 Docker 主机的地址</li>
-<li><strong>kill</strong>： 直接杀死指定的 Docker 主机</li>
-<li><strong>ls</strong>： 列出所有的管理主机</li>
-<li><strong>provision</strong>： 重新配置指定主机</li>
-<li><strong>regenerate-certs</strong>： 为某个主机重新生成 TLS 信息</li>
-<li><strong>restart</strong>： 重启指定的主机</li>
-<li><strong>rm</strong>： 删除某台 Docker 主机，对应的虚拟机也会被删除</li>
-<li><strong>ssh</strong>： 通过 SSH 连接到主机上，执行命令</li>
-<li><strong>scp</strong>： 在 Docker 主机之间以及 Docker 主机和本地主机之间通过 scp 远程复制数据</li>
-<li><strong>mount</strong>： 使用 SSHFS 从计算机装载或卸载目录</li>
-<li><strong>start</strong>： 启动一个指定的 Docker 主机，如果对象是个虚拟机，该虚拟机将被启动</li>
-<li><strong>status</strong>： 获取指定 Docker 主机的状态(包括：Running、Paused、Saved、Stopped、Stopping、Starting、Error)等</li>
-<li><strong>stop</strong>： 停止一个指定的 Docker 主机</li>
-<li><strong>upgrade</strong>： 将一个指定主机的 Docker 版本更新为最新</li>
-<li><strong>url</strong>： 获取指定 Docker 主机的监听 URL</li>
-<li><strong>version</strong>： 显示 Docker Machine 的版本或者主机 Docker 版本</li>
-<li><strong>help</strong>： 显示帮助信息</li>
-</ul>
+</div><p>接着消费者只需要遍历返回的json串里的producers列表，把broadcast_address和tcp_port或者http_port拼起来，就可以拿到要建立连接的url地址。</p>
+<p>消费者会和这些nsq，逐个建立连接。nsq收到对应topic的消息后，就会给和他们建立连接的消费者，推送消息。</p>
+<h3 id="nsqadmin">nsqadmin</h3>
+<p>一套Web用户界面，可实时查看集群的统计数据和执行相应的管理任务</p>
+<h2 id="消息">消息</h2>
+<h3 id="消息至少被投递一次">消息至少被投递一次</h3>
+<p>消息投递策略，是消息中间件的特有属性，不同的消息中间件，对投递策略的支持也不同。比如Kafka，就支持最多一次（At most once）、至少一次(At lease once)、准确一次(Excatly once)三种策略，而nsq，则只支持最常见的一种，也就是至少一次。</p>
+<p>如果消费者收到消息，并成功执行，那么就给nsq返回<code>FIN</code>，代表消息已被成功执行，这时nsq就可以把内存中，也就是channel里的消息干掉；</p>
+<p>而如果消费者处理消息时发生了异常，需要重试，那么就给nsq返回<code>REQ</code>，代表requeue，重新进入队列的意思，nsq就会把消息重新放到队列中，再次推送给消费者(这一次可能是另一个消费者实例)。如果消费者迟迟没有给nsq回响应，超过了最大等待时间，那么nsq也会将消息requeue.</p>
+<p><strong>消费者必须保证操作的幂等性</strong></p>
+<h3 id="重试次数">重试次数</h3>
+<p>nsq推送过来的消息里，有个<code>attempts</code>字段，代表着尝试的次数，一开始是1，每次客户端给nsq会<code>REQ</code>响应后，nsq再次推送过来的消息，<code>attempts</code>都会加1，消费者可以按照自己的需要，对重试次数进行限制，比如希望最多尝试6次，那么就在消费者的处理逻辑中，判断<code>attempts &lt;= 6</code>，是，则执行处理逻辑，否则，打印日志或者做其他处理，然后直接返回<code>FIN</code>，告诉nsq不要再重试。</p>
+<h3 id="消息无序性">消息无序性</h3>
+<p>比如说channel A里现在有两条消息，M1和M2，M1先产生，M2后产生，channel A分别将M1和M2推送给了消费者 C1和C2，那么有可能C1比C2先处理完消息，这样是有序的；但也有可能，C2先处理了，这样M2就比M1先被处理，这样就是无序的。</p>
+<p>一有消息就推送的策略，nsq里的消息处理是无序的。</p>
+<h3 id="push">push</h3>
+<p>Kafka用的是pull，而Nsq采取的是push。</p>
+<p>push的消息处理更加实时，一旦有消息过来，立即推送出去，而pull则具有不确定性，你不知道消费者什么时候有空过来pull，因此做不到实时消息处理。</p>
+<p>也正是因为采用了push，<strong>nsq选择把消息放到内存中</strong>，只有当队列里消息的数量超过<code>--mem-queue-size</code>配置的限制时，才会对消息进行持久化，把消息保存到磁盘中，简称”刷盘“。</p>
+<p>而采用pull的Kafka，则直接把消息存储到磁盘。</p>
+<h3 id="流控">流控</h3>
+<p>Nsq流控的方式非常简单，当消费者和nsq建立好连接，准备好接受消息时，会给nsq回一个<code>RDY</code>的响应，同时带上一个<code>rdy_count</code>，代表准备接受消息的数量，于是nsq会给消费者推送消息，每推送一条，对应连接的<code>rdy_count</code>就减1(如果是批量推送，则批量减)，直到连接的<code>rdy_count</code>变成0，则不再继续推送消息。</p>
+<p>当消费者觉得自己可以接收很多消息时，只需再发一次<code>RDY</code>命令，就可以更新连接的<code>rdy_count</code>，nsq就会继续给消费者推送消息。</p>
+<h3 id="持久化">持久化</h3>
+<p>Nsq只把消息存储到一台机器中，不做任何备份，一旦机器奔溃，磁盘损坏，消息就永久丢失了。</p>
+<p>Kafka则通过partition的机制，对消息做了备份，增强了消息的安全性。</p>
+<h2 id="集群">集群</h2>
+<p>官方推荐一个生产者对应的部署一个nsqd</p>
 
         </div>
 
@@ -331,6 +321,8 @@ docker@default:~$
     <h2>See Also</h2>
     <ul class="listing">
         
+        <li><a href="/posts/boot2docker/">boot2docker</a></li>
+        
         <li><a href="/posts/docker-use/">Docker使用</a></li>
         
         <li><a href="/posts/hash-mod-primenumber/">散列函数中求模运算为什么要使用素数</a></li>
@@ -338,8 +330,6 @@ docker@default:~$
         <li><a href="/posts/my-first-post/">My First Post</a></li>
         
         <li><a href="/about/">关于我</a></li>
-        
-        <li><a href="/archives/">归档</a></li>
         
     </ul>
 </div>
@@ -349,11 +339,9 @@ docker@default:~$
             
             <ul class="clearfix">
                 
-                <li><a href='/tags/docker'>Docker</a></li>
+                <li><a href='/tags/mq'>mq</a></li>
                 
-                <li><a href='/tags/boot2docker'>boot2docker</a></li>
-                
-                <li><a href='/tags/docker-machine'>docker-machine</a></li>
+                <li><a href='/tags/nsq'>nsq</a></li>
                 
             </ul>
             

@@ -9,21 +9,21 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
     
 
-    <title>Go | B族维生素</title>
-    <meta property="og:title" content="Go - B族维生素">
+    <title>MQ | B族维生素</title>
+    <meta property="og:title" content="MQ - B族维生素">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="收藏不迷路！">
-    <meta name="description" content="Go">
+    <meta name="description" content="MQ">
         
     <meta name="author" content="Nick">
-    <meta property="og:url" content="https://suoning.github.io/tags/go/">
+    <meta property="og:url" content="https://suoning.github.io/categories/mq/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml+xml" href="https://suoning.github.io/tags/go/index.xml" title="B族维生素" />
+    <link rel="alternate" type="application/rss+xml+xml" href="https://suoning.github.io/categories/mq/index.xml" title="B族维生素" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -70,9 +70,9 @@
 <div class="res-cons">
     
     <h3 class="archive-title">
-        包含标签
-        <span class="keyword">Go</span>
-        的文章
+        分类
+        <span class="keyword">MQ</span>
+        中的文章
     </h3>
     
 
@@ -80,27 +80,38 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://suoning.github.io/posts/my-first-post/">My First Post</a>
+                <a href="https://suoning.github.io/posts/nsq/">Nsq</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2021年1月9日
+            2021年2月2日
         </date>
         
         <div class="post-meta meta-category">
             |
             
-            <a href='/categories/lets-golang'>Let&#39;s Golang</a>
+            <a href='/categories/mq'>MQ</a>
             
         </div>
         
         <div class="post-content">
-            hugo --theme=maupassant --baseUrl=&quot;https://suoning.github.io/&quot; cd public git init git remote add origin https://github.com/suoning/suoning.github.io.git git add -A git commit -m &quot;first commit&quot; git push --set-upstream origin master 一级标题 二级标题 三级标题 四级标题 五级标题 六级标题 JavaScript 在控制台输出消息的语法是 console.log(message)。
-class Program { static void Main(string[] args) { Console.WriteLine(&quot;Hello World!&quot;); } }  https://suoning.cnblogs.com/
-百度一下，你就知道 
- …or create a new repository on the command line
-echo &quot;# suoning.github.io&quot; &gt;&gt; README.md git init git add README.md git commit -m &quot;first commit&quot; git branch -M main git remote add origin https://github.……
-            <p class="readmore"><a href="https://suoning.github.io/posts/my-first-post/">阅读全文</a></p>
+            简介 NSQ是一个基于Go语言的分布式实时消息平台
+具有分布式、去中心化的拓扑结构，支持无限水平扩展。
+无单点故障、故障容错、高可用性以及能够保证消息的可靠传递的特征。
+容易配置和部署, 支持众多的消息协议。
+支持多种客户端，协议简单。
+组件 nsqd 一个负责接收、排队、转发消息到客户端的守护进程
+channel 消费者组（Comsumer Group）的概念。消费者组是Kafka里提到的，在Nsq，对应的术语是channel
+当nsq收到消息时，会给每个channel复制一份消息，然后channel再给对应的消费者组，推送一条消息，默认轮询
+ 图中，nsq上有一个叫”clicks“的topic，”clicks“下面有三条channel，也就是三个消费者组，其中channel名称为”metrics“的，有三个实例。消息A来到nsq后，被复制到三条channel，接着，在metrics上的那个A，被推送到了第二个实例上。接着，又来了一个叫B的消息，这一次，B被推送给了第一个实例进行处理。
+nsqlookupd 管理拓扑信息, 用于收集nsqd上报的topic和channel,并提供最终一致性的发现服务的守护进程
+nsqlookup提供了类似于etcd、zookeeper一样的kv存储服务，里面记录了topic下面都有哪些nsq。
+nsqlookup提供了一个/lookup接口，比如你想知道哪些nsq上面，有topic为test的消息，那么只需要调一下：
+1  curl &#39;http://127.0.0.1:8606/lookup?topic=test&#39;   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15  { &#34;channels&#34;:[ &#34;nsq_***.com&#34; ], &#34;producers&#34;:[ { &#34;remote_address&#34;:&#34;127.0.0.1:42362&#34;, &#34;hostname&#34;:&#34;***.com&#34;, &#34;broadcast_address&#34;:&#34;***.com&#34;, &#34;tcp_port&#34;:8602, &#34;http_port&#34;:8603, &#34;version&#34;:&#34;1.1.0&#34; } ] }   接着消费者只需要遍历返回的json串里的producers列表，把broadcast_address和tcp_port或者http_port拼起来，就可以拿到要建立连接的url地址。
+消费者会和这些nsq，逐个建立连接。nsq收到对应topic的消息后，就会给和他们建立连接的消费者，推送消息。
+nsqadmin 一套Web用户界面，可实时查看集群的统计数据和执行相应的管理任务
+消息 消息至少被投递一次 消息投递策略，是消息中间件的特有属性，不同的消息中间件，对投递策略的支持也不同。比如Kafka，就支持最多一次（At most once）、至少一次(At lease once)、准确一次(Excatly once)三种策略，而nsq，则只支持最常见的一种，也就是至少一次。……
+            <p class="readmore"><a href="https://suoning.github.io/posts/nsq/">阅读全文</a></p>
         </div>
     </article>
     

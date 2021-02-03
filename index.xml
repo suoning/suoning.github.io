@@ -6,10 +6,34 @@
     <description>Recent content on B族维生素</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 25 Jan 2021 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 02 Feb 2021 00:00:00 +0800</lastBuildDate>
     
 	<atom:link href="https://suoning.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Nsq</title>
+      <link>https://suoning.github.io/posts/nsq/</link>
+      <pubDate>Tue, 02 Feb 2021 00:00:00 +0800</pubDate>
+      
+      <guid>https://suoning.github.io/posts/nsq/</guid>
+      <description>简介 NSQ是一个基于Go语言的分布式实时消息平台
+具有分布式、去中心化的拓扑结构，支持无限水平扩展。
+无单点故障、故障容错、高可用性以及能够保证消息的可靠传递的特征。
+容易配置和部署, 支持众多的消息协议。
+支持多种客户端，协议简单。
+组件 nsqd 一个负责接收、排队、转发消息到客户端的守护进程
+channel 消费者组（Comsumer Group）的概念。消费者组是Kafka里提到的，在Nsq，对应的术语是channel
+当nsq收到消息时，会给每个channel复制一份消息，然后channel再给对应的消费者组，推送一条消息，默认轮询
+ 图中，nsq上有一个叫”clicks“的topic，”clicks“下面有三条channel，也就是三个消费者组，其中channel名称为”metrics“的，有三个实例。消息A来到nsq后，被复制到三条channel，接着，在metrics上的那个A，被推送到了第二个实例上。接着，又来了一个叫B的消息，这一次，B被推送给了第一个实例进行处理。
+nsqlookupd 管理拓扑信息, 用于收集nsqd上报的topic和channel,并提供最终一致性的发现服务的守护进程
+nsqlookup提供了类似于etcd、zookeeper一样的kv存储服务，里面记录了topic下面都有哪些nsq。
+nsqlookup提供了一个/lookup接口，比如你想知道哪些nsq上面，有topic为test的消息，那么只需要调一下：
+1  curl &amp;#39;http://127.0.0.1:8606/lookup?topic=test&amp;#39;   1 2 3 4 5 6 7 8 9 10 11 12 13 14 15  { &amp;#34;channels&amp;#34;:[ &amp;#34;nsq_***.com&amp;#34; ], &amp;#34;producers&amp;#34;:[ { &amp;#34;remote_address&amp;#34;:&amp;#34;127.0.0.1:42362&amp;#34;, &amp;#34;hostname&amp;#34;:&amp;#34;***.com&amp;#34;, &amp;#34;broadcast_address&amp;#34;:&amp;#34;***.com&amp;#34;, &amp;#34;tcp_port&amp;#34;:8602, &amp;#34;http_port&amp;#34;:8603, &amp;#34;version&amp;#34;:&amp;#34;1.1.0&amp;#34; } ] }   接着消费者只需要遍历返回的json串里的producers列表，把broadcast_address和tcp_port或者http_port拼起来，就可以拿到要建立连接的url地址。
+消费者会和这些nsq，逐个建立连接。nsq收到对应topic的消息后，就会给和他们建立连接的消费者，推送消息。
+nsqadmin 一套Web用户界面，可实时查看集群的统计数据和执行相应的管理任务
+消息 消息至少被投递一次 消息投递策略，是消息中间件的特有属性，不同的消息中间件，对投递策略的支持也不同。比如Kafka，就支持最多一次（At most once）、至少一次(At lease once)、准确一次(Excatly once)三种策略，而nsq，则只支持最常见的一种，也就是至少一次。</description>
+    </item>
     
     <item>
       <title>boot2docker</title>

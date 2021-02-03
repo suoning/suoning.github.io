@@ -6,10 +6,28 @@
     <description>Recent content in Tags on B族维生素</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 25 Jan 2021 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 02 Feb 2021 00:00:00 +0800</lastBuildDate>
     
 	<atom:link href="https://suoning.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>mq</title>
+      <link>https://suoning.github.io/tags/mq/</link>
+      <pubDate>Tue, 02 Feb 2021 00:00:00 +0800</pubDate>
+      
+      <guid>https://suoning.github.io/tags/mq/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>nsq</title>
+      <link>https://suoning.github.io/tags/nsq/</link>
+      <pubDate>Tue, 02 Feb 2021 00:00:00 +0800</pubDate>
+      
+      <guid>https://suoning.github.io/tags/nsq/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>boot2docker</title>
