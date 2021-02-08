@@ -9,20 +9,20 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
     
 
-    <title>Nsq | B族维生素</title>
-    <meta property="og:title" content="Nsq - B族维生素">
+    <title>Mysql Varchar 类型为什么默认设置 255 ? | B族维生素</title>
+    <meta property="og:title" content="Mysql Varchar 类型为什么默认设置 255 ? - B族维生素">
     <meta property="og:type" content="article">
         
-    <meta property="article:published_time" content='2021-02-02T00:00:00&#43;08:00'>
+    <meta property="article:published_time" content='2021-02-08T00:00:00&#43;08:00'>
         
         
-    <meta property="article:modified_time" content='2021-02-02T00:00:00&#43;08:00'>
+    <meta property="article:modified_time" content='2021-02-08T00:00:00&#43;08:00'>
         
     <meta name="Keywords" content="收藏不迷路！">
-    <meta name="description" content="Nsq">
+    <meta name="description" content="Mysql Varchar 类型为什么默认设置 255 ?">
         
     <meta name="author" content="Nick">
-    <meta property="og:url" content="https://suoning.github.io/posts/nsq/">
+    <meta property="og:url" content="https://suoning.github.io/posts/mysql-varchar-%E7%B1%BB%E5%9E%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E9%BB%98%E8%AE%A4%E8%AE%BE%E7%BD%AE-255-/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
@@ -137,26 +137,15 @@
     <div class="post-toc-content">
         <nav id="TableOfContents">
   <ul>
-    <li><a href="#简介">简介</a></li>
-    <li><a href="#组件">组件</a>
+    <li><a href="#mysql56x">Mysql5.6.x</a></li>
+    <li><a href="#mysql57x">Mysql5.7.x</a></li>
+    <li><a href="#varchar-类型为什么默认设置-255-">Varchar 类型为什么默认设置 255 ?</a>
       <ul>
-        <li><a href="#nsqd">nsqd</a></li>
-        <li><a href="#channel">channel</a></li>
-        <li><a href="#nsqlookupd">nsqlookupd</a></li>
-        <li><a href="#nsqadmin">nsqadmin</a></li>
+        <li><a href="#utf8">utf8</a></li>
+        <li><a href="#utf8mb4">utf8mb4</a></li>
       </ul>
     </li>
-    <li><a href="#消息">消息</a>
-      <ul>
-        <li><a href="#消息至少被投递一次">消息至少被投递一次</a></li>
-        <li><a href="#重试次数">重试次数</a></li>
-        <li><a href="#消息无序性">消息无序性</a></li>
-        <li><a href="#push">push</a></li>
-        <li><a href="#流控">流控</a></li>
-        <li><a href="#持久化">持久化</a></li>
-      </ul>
-    </li>
-    <li><a href="#集群">集群</a></li>
+    <li><a href="#为什么联合索引长度是-3072">为什么联合索引长度是 3072</a></li>
   </ul>
 </nav>
     </div>
@@ -190,16 +179,16 @@
 </script>
     <article class="post">
         <header>
-            <h1 class="post-title">Nsq</h1>
+            <h1 class="post-title">Mysql Varchar 类型为什么默认设置 255 ?</h1>
         </header>
         <date class="post-meta meta-date">
-            2021年2月2日
+            2021年2月8日
         </date>
         
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='/categories/mq'>MQ</a></span>
+            <span class="meta-category"><a href='/categories/mysql'>Mysql</a></span>
             
         </div>
         
@@ -217,98 +206,45 @@
         </div>
         
         <div class="post-content">
-            <h2 id="简介">简介</h2>
-<p>NSQ是一个基于Go语言的分布式实时消息平台</p>
-<p>具有分布式、去中心化的拓扑结构，支持无限水平扩展。</p>
-<p>无单点故障、故障容错、高可用性以及能够保证消息的可靠传递的特征。</p>
-<p>容易配置和部署, 支持众多的消息协议。</p>
-<p>支持多种客户端，协议简单。</p>
-<h2 id="组件">组件</h2>
-<h3 id="nsqd">nsqd</h3>
-<p>一个负责接收、排队、转发消息到客户端的守护进程</p>
-<h3 id="channel">channel</h3>
-<p>消费者组（Comsumer Group）的概念。消费者组是Kafka里提到的，在Nsq，对应的术语是channel</p>
-<p>当nsq收到消息时，会给每个channel复制一份消息，然后channel再给对应的消费者组，推送一条消息，默认轮询</p>
-<p>
-        <img class="mx-auto" alt="" src="https://f.cloud.github.com/assets/187441/1700696/f1434dc8-6029-11e3-8a66-18ca4ea10aca.gif" />   
-    </p>
-<p>图中，nsq上有一个叫”clicks“的topic，”clicks“下面有三条channel，也就是三个消费者组，其中channel名称为”metrics“的，有三个实例。消息A来到nsq后，被复制到三条channel，接着，在metrics上的那个A，被推送到了第二个实例上。接着，又来了一个叫B的消息，这一次，B被推送给了第一个实例进行处理。</p>
-<h3 id="nsqlookupd">nsqlookupd</h3>
-<p>管理拓扑信息, 用于收集nsqd上报的topic和channel,并提供最终一致性的发现服务的守护进程</p>
-<p>nsqlookup提供了类似于etcd、zookeeper一样的kv存储服务，里面记录了topic下面都有哪些nsq。</p>
-<p>nsqlookup提供了一个<code>/lookup</code>接口，比如你想知道哪些nsq上面，有topic为test的消息，那么只需要调一下：</p>
+            <h2 id="mysql56x">Mysql5.6.x</h2>
+<p>在 <code>Mysql5.6</code> 版本下，单列索引的长度不能超过 <code>767bytes</code>，联合索引的长度不能超过 <code>3072bytes</code></p>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">curl <span style="color:#d14">&#39;http://127.0.0.1:8606/lookup?topic=test&#39;</span>
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#000;font-weight:bold">CREATE</span> <span style="color:#000;font-weight:bold">TABLE</span> <span style="color:#000;font-weight:bold">`</span>test<span style="color:#000;font-weight:bold">`</span> (
+    <span style="color:#000;font-weight:bold">`</span>a<span style="color:#000;font-weight:bold">`</span> <span style="color:#458;font-weight:bold">varchar</span>(<span style="color:#099">255</span>) <span style="color:#000;font-weight:bold">DEFAULT</span> <span style="color:#008080">NULL</span>,
+    <span style="color:#000;font-weight:bold">`</span>b<span style="color:#000;font-weight:bold">`</span> <span style="color:#458;font-weight:bold">varchar</span>(<span style="color:#099">255</span>) <span style="color:#000;font-weight:bold">DEFAULT</span> <span style="color:#008080">NULL</span>,
+    <span style="color:#000;font-weight:bold">`</span>c<span style="color:#000;font-weight:bold">`</span> <span style="color:#458;font-weight:bold">varchar</span>(<span style="color:#099">255</span>) <span style="color:#000;font-weight:bold">DEFAULT</span> <span style="color:#008080">NULL</span>,
+    <span style="color:#000;font-weight:bold">`</span>d<span style="color:#000;font-weight:bold">`</span> <span style="color:#458;font-weight:bold">varchar</span>(<span style="color:#099">255</span>) <span style="color:#000;font-weight:bold">DEFAULT</span> <span style="color:#008080">NULL</span>,
+    <span style="color:#000;font-weight:bold">`</span>e<span style="color:#000;font-weight:bold">`</span> <span style="color:#458;font-weight:bold">varchar</span>(<span style="color:#099">255</span>) <span style="color:#000;font-weight:bold">DEFAULT</span> <span style="color:#008080">NULL</span>,
+<span style="color:#000;font-weight:bold">KEY</span> <span style="color:#000;font-weight:bold">`</span>a<span style="color:#000;font-weight:bold">`</span> (<span style="color:#000;font-weight:bold">`</span>a<span style="color:#000;font-weight:bold">`</span>,<span style="color:#000;font-weight:bold">`</span>b<span style="color:#000;font-weight:bold">`</span>,<span style="color:#000;font-weight:bold">`</span>c<span style="color:#000;font-weight:bold">`</span>,<span style="color:#000;font-weight:bold">`</span>d<span style="color:#000;font-weight:bold">`</span>,<span style="color:#000;font-weight:bold">`</span>e<span style="color:#000;font-weight:bold">`</span>)
+)<span style="color:#000;font-weight:bold">ENGINE</span><span style="color:#000;font-weight:bold">=</span>InnoDB <span style="color:#000;font-weight:bold">DEFAULT</span> <span style="color:#000;font-weight:bold">CHARSET</span><span style="color:#000;font-weight:bold">=</span>utf8;
+<span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#099">1071</span> <span style="color:#000;font-weight:bold">-</span> Specified <span style="color:#000;font-weight:bold">key</span> was too <span style="color:#000;font-weight:bold">long</span>; max <span style="color:#000;font-weight:bold">key</span> length <span style="color:#000;font-weight:bold">is</span> <span style="color:#099">3072</span> bytes
 </code></pre></td></tr></table>
 </div>
-</div><div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-    <span style="color:#000080">&#34;channels&#34;</span>:[
-        <span style="color:#d14">&#34;nsq_***.com&#34;</span>
-    ],
-    <span style="color:#000080">&#34;producers&#34;</span>:[
-        {
-            <span style="color:#000080">&#34;remote_address&#34;</span>:<span style="color:#d14">&#34;127.0.0.1:42362&#34;</span>,
-            <span style="color:#000080">&#34;hostname&#34;</span>:<span style="color:#d14">&#34;***.com&#34;</span>,
-            <span style="color:#000080">&#34;broadcast_address&#34;</span>:<span style="color:#d14">&#34;***.com&#34;</span>,
-            <span style="color:#000080">&#34;tcp_port&#34;</span>:<span style="color:#099">8602</span>,
-            <span style="color:#000080">&#34;http_port&#34;</span>:<span style="color:#099">8603</span>,
-            <span style="color:#000080">&#34;version&#34;</span>:<span style="color:#d14">&#34;1.1.0&#34;</span>
-        }
-    ]
-}
-</code></pre></td></tr></table>
-</div>
-</div><p>接着消费者只需要遍历返回的json串里的producers列表，把broadcast_address和tcp_port或者http_port拼起来，就可以拿到要建立连接的url地址。</p>
-<p>消费者会和这些nsq，逐个建立连接。nsq收到对应topic的消息后，就会给和他们建立连接的消费者，推送消息。</p>
-<h3 id="nsqadmin">nsqadmin</h3>
-<p>一套Web用户界面，可实时查看集群的统计数据和执行相应的管理任务</p>
-<h2 id="消息">消息</h2>
-<h3 id="消息至少被投递一次">消息至少被投递一次</h3>
-<p>消息投递策略，是消息中间件的特有属性，不同的消息中间件，对投递策略的支持也不同。比如Kafka，就支持最多一次（At most once）、至少一次(At lease once)、准确一次(Excatly once)三种策略，而nsq，则只支持最常见的一种，也就是至少一次。</p>
-<p>如果消费者收到消息，并成功执行，那么就给nsq返回<code>FIN</code>，代表消息已被成功执行，这时nsq就可以把内存中，也就是channel里的消息干掉；</p>
-<p>而如果消费者处理消息时发生了异常，需要重试，那么就给nsq返回<code>REQ</code>，代表requeue，重新进入队列的意思，nsq就会把消息重新放到队列中，再次推送给消费者(这一次可能是另一个消费者实例)。如果消费者迟迟没有给nsq回响应，超过了最大等待时间，那么nsq也会将消息requeue.</p>
-<p><strong>消费者必须保证操作的幂等性</strong></p>
-<h3 id="重试次数">重试次数</h3>
-<p>nsq推送过来的消息里，有个<code>attempts</code>字段，代表着尝试的次数，一开始是1，每次客户端给nsq会<code>REQ</code>响应后，nsq再次推送过来的消息，<code>attempts</code>都会加1，消费者可以按照自己的需要，对重试次数进行限制，比如希望最多尝试6次，那么就在消费者的处理逻辑中，判断<code>attempts &lt;= 6</code>，是，则执行处理逻辑，否则，打印日志或者做其他处理，然后直接返回<code>FIN</code>，告诉nsq不要再重试。</p>
-<h3 id="消息无序性">消息无序性</h3>
-<p>比如说channel A里现在有两条消息，M1和M2，M1先产生，M2后产生，channel A分别将M1和M2推送给了消费者 C1和C2，那么有可能C1比C2先处理完消息，这样是有序的；但也有可能，C2先处理了，这样M2就比M1先被处理，这样就是无序的。</p>
-<p>一有消息就推送的策略，nsq里的消息处理是无序的。</p>
-<h3 id="push">push</h3>
-<p>Kafka用的是pull，而Nsq采取的是push。</p>
-<p>push的消息处理更加实时，一旦有消息过来，立即推送出去，而pull则具有不确定性，你不知道消费者什么时候有空过来pull，因此做不到实时消息处理。</p>
-<p>也正是因为采用了push，<strong>nsq选择把消息放到内存中</strong>，只有当队列里消息的数量超过<code>--mem-queue-size</code>配置的限制时，才会对消息进行持久化，把消息保存到磁盘中，简称”刷盘“。</p>
-<p>而采用pull的Kafka，则直接把消息存储到磁盘。</p>
-<h3 id="流控">流控</h3>
-<p>Nsq流控的方式非常简单，当消费者和nsq建立好连接，准备好接受消息时，会给nsq回一个<code>RDY</code>的响应，同时带上一个<code>rdy_count</code>，代表准备接受消息的数量，于是nsq会给消费者推送消息，每推送一条，对应连接的<code>rdy_count</code>就减1(如果是批量推送，则批量减)，直到连接的<code>rdy_count</code>变成0，则不再继续推送消息。</p>
-<p>当消费者觉得自己可以接收很多消息时，只需再发一次<code>RDY</code>命令，就可以更新连接的<code>rdy_count</code>，nsq就会继续给消费者推送消息。</p>
-<h3 id="持久化">持久化</h3>
-<p>Nsq只把消息存储到一台机器中，不做任何备份，一旦机器奔溃，磁盘损坏，消息就永久丢失了。</p>
-<p>Kafka则通过partition的机制，对消息做了备份，增强了消息的安全性。</p>
-<h2 id="集群">集群</h2>
-<p>官方推荐一个生产者对应的部署一个nsqd</p>
+</div><p>每个字段 <code>255*3*5=3825</code>，大于了 <code>3072</code>，则报错了</p>
+<h2 id="mysql57x">Mysql5.7.x</h2>
+<p>在 <code>Mysql5.7</code> 版本下，单列索引的长度不能超过 <code>3072bytes</code>，联合索引的长度不能超过 <code>3072bytes</code></p>
+<h2 id="varchar-类型为什么默认设置-255-">Varchar 类型为什么默认设置 255 ?</h2>
+<h3 id="utf8">utf8</h3>
+<p>上面说到单列索引长度为 767，在 utf8 编码下，一个字符为 3bytes，那么 255*3=765，刚好为能够建立索引长度的最大值，如果超出了这个值，如果使用的是 navicat 那么 mysql 会自动将这一列的索引变为前缀索引，截取 255</p>
+<h3 id="utf8mb4">utf8mb4</h3>
+<p>在 utf8mb4 下，一个字符为 4bytes, 那么 767÷4=191.75，取整为 191，所以在 utf8mb4 编码下，如果你的 varchar 超出 191，如果使用的是 navicat 那么 mysql 会自动将这一列的索引变为前缀索引，截取 191</p>
+<h2 id="为什么联合索引长度是-3072">为什么联合索引长度是 3072</h2>
+<p>我们知道 InnoDB 一个 page 的默认大小是 16k。由于是 Btree 组织，要求叶子节点上一个 page 至少要包含两条记录（否则就退化链表了）。</p>
+<p>所以一个记录最多不能超过 8k。</p>
+<p>又由于 InnoDB 的聚簇索引结构，一个二级索引要包含主键索引，因此每个单个索引不能超过 4k （极端情况，pk 和某个二级索引都达到这个限制）。</p>
+<p>由于需要预留和辅助空间，扣掉后不能超过 3500，取个 整数 就是 1024*3=3072。</p>
 
         </div>
 
@@ -321,6 +257,8 @@
     <h2>See Also</h2>
     <ul class="listing">
         
+        <li><a href="/posts/nsq/">Nsq</a></li>
+        
         <li><a href="/posts/boot2docker/">boot2docker</a></li>
         
         <li><a href="/posts/docker-use/">Docker使用</a></li>
@@ -328,8 +266,6 @@
         <li><a href="/posts/hash-mod-primenumber/">散列函数中求模运算为什么要使用素数</a></li>
         
         <li><a href="/posts/my-first-post/">My First Post</a></li>
-        
-        <li><a href="/about/">关于我</a></li>
         
     </ul>
 </div>
@@ -339,9 +275,7 @@
             
             <ul class="clearfix">
                 
-                <li><a href='/tags/mq'>mq</a></li>
-                
-                <li><a href='/tags/nsq'>nsq</a></li>
+                <li><a href='/tags/mysql'>Mysql</a></li>
                 
             </ul>
             

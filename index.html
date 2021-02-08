@@ -71,6 +71,31 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://suoning.github.io/posts/mysql-varchar-%E7%B1%BB%E5%9E%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E9%BB%98%E8%AE%A4%E8%AE%BE%E7%BD%AE-255-/" title="Mysql Varchar 类型为什么默认设置 255 ?">Mysql Varchar 类型为什么默认设置 255 ?</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2021年2月8日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/mysql'>Mysql</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            Mysql5.6.x 在 Mysql5.6 版本下，单列索引的长度不能超过 767bytes，联合索引的长度不能超过 3072bytes
+1 2 3 4 5 6 7 8 9  CREATE TABLE `test` ( `a` varchar(255) DEFAULT NULL, `b` varchar(255) DEFAULT NULL, `c` varchar(255) DEFAULT NULL, `d` varchar(255) DEFAULT NULL, `e` varchar(255) DEFAULT NULL, KEY `a` (`a`,`b`,`c`,`d`,`e`) )ENGINE=InnoDB DEFAULT CHARSET=utf8; &gt; 1071 - Specified key was too long; max key length is 3072 bytes   每个字段 255*3*5=3825，大于了 3072，则报错了
+Mysql5.7.x 在 Mysql5.7 版本下，单列索引的长度不能超过 3072bytes，联合索引的长度不能超过 3072bytes……
+        </div>
+        <p class="readmore"><a href="https://suoning.github.io/posts/mysql-varchar-%E7%B1%BB%E5%9E%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E9%BB%98%E8%AE%A4%E8%AE%BE%E7%BD%AE-255-/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://suoning.github.io/posts/nsq/" title="Nsq">Nsq</a>
             </h1>
         </header>
@@ -275,6 +300,10 @@ if (!doNotTrack) {
 <ul class="widget-list">
     
     <li>
+        <a href="https://suoning.github.io/posts/mysql-varchar-%E7%B1%BB%E5%9E%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E9%BB%98%E8%AE%A4%E8%AE%BE%E7%BD%AE-255-/" title="Mysql Varchar 类型为什么默认设置 255 ?">Mysql Varchar 类型为什么默认设置 255 ?</a>
+    </li>
+    
+    <li>
         <a href="https://suoning.github.io/posts/nsq/" title="Nsq">Nsq</a>
     </li>
     
@@ -309,6 +338,8 @@ if (!doNotTrack) {
     
     <li><a href="https://suoning.github.io/categories/mq/">MQ (1)</a></li>
     
+    <li><a href="https://suoning.github.io/categories/mysql/">Mysql (1)</a></li>
+    
     <li><a href="https://suoning.github.io/categories/%E5%85%B6%E4%BB%96/">其他 (1)</a></li>
     
 </ul>
@@ -329,6 +360,8 @@ if (!doNotTrack) {
     <a href="https://suoning.github.io/tags/golang/">Golang</a>
     
     <a href="https://suoning.github.io/tags/mq/">mq</a>
+    
+    <a href="https://suoning.github.io/tags/mysql/">Mysql</a>
     
     <a href="https://suoning.github.io/tags/nsq/">nsq</a>
     
