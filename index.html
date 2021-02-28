@@ -71,6 +71,46 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://suoning.github.io/posts/rpc-http/" title="rpc http">rpc http</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2021年2月28日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/rpc'>RPC</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            rpc定义 RPC（Remote Procedure Call，远程过程调用）。
+其调用协议通常包括序列化协议和传输协议。
+序列化协议有 XML、 JSON、Protobuf 和 Hessian。
+传输协议是指其底层网络传输所使用的协议， TCP、HTTP。
+基于这套协议规范来实现的框架都可以称为 RPC 框架，比如 Thrift 和 gRPC。
+rpc 与 http 的关系 这是一道面试题。
+HTTP 和 TCP 协议都可以作为 RPC 的传输协议。
+gRPC的网络传输协议就是 HTTP2。
+tcp or http TCP 协议可以对协议字段进行定制，减少非必要字段的传输，减少网络开销；
+而 HTTP 协议则包含了头部等信息。
+常见的rpc框架 grpc 特性
+  内置流式 RPC 支持。
+  基于 ProtoBuf 进行数据序列化。
+  底层基于 HTTP/2 标准设计。
+  优秀的社区支持。
+  提供多种语言支持。
+  thrift 通信协议（TProtocol）
+  二进制编码协议（TBinaryProtocol）……
+        </div>
+        <p class="readmore"><a href="https://suoning.github.io/posts/rpc-http/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://suoning.github.io/posts/mysql-varchar-%E7%B1%BB%E5%9E%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E9%BB%98%E8%AE%A4%E8%AE%BE%E7%BD%AE-255-/" title="Mysql Varchar 类型为什么默认设置 255 ?">Mysql Varchar 类型为什么默认设置 255 ?</a>
             </h1>
         </header>
@@ -300,6 +340,10 @@ if (!doNotTrack) {
 <ul class="widget-list">
     
     <li>
+        <a href="https://suoning.github.io/posts/rpc-http/" title="rpc http">rpc http</a>
+    </li>
+    
+    <li>
         <a href="https://suoning.github.io/posts/mysql-varchar-%E7%B1%BB%E5%9E%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E9%BB%98%E8%AE%A4%E8%AE%BE%E7%BD%AE-255-/" title="Mysql Varchar 类型为什么默认设置 255 ?">Mysql Varchar 类型为什么默认设置 255 ?</a>
     </li>
     
@@ -340,6 +384,8 @@ if (!doNotTrack) {
     
     <li><a href="https://suoning.github.io/categories/mysql/">Mysql (1)</a></li>
     
+    <li><a href="https://suoning.github.io/categories/rpc/">RPC (1)</a></li>
+    
     <li><a href="https://suoning.github.io/categories/%E5%85%B6%E4%BB%96/">其他 (1)</a></li>
     
 </ul>
@@ -359,11 +405,15 @@ if (!doNotTrack) {
     
     <a href="https://suoning.github.io/tags/golang/">Golang</a>
     
+    <a href="https://suoning.github.io/tags/http/">http</a>
+    
     <a href="https://suoning.github.io/tags/mq/">mq</a>
     
     <a href="https://suoning.github.io/tags/mysql/">Mysql</a>
     
     <a href="https://suoning.github.io/tags/nsq/">nsq</a>
+    
+    <a href="https://suoning.github.io/tags/rpc/">rpc</a>
     
     <a href="https://suoning.github.io/tags/%E7%B4%A0%E6%95%B0%E5%8F%96%E6%A8%A1/">素数取模</a>
     

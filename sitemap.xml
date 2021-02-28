@@ -4,12 +4,42 @@
   
   <url>
     <loc>https://suoning.github.io/</loc>
-    <lastmod>2021-02-08T00:00:00+08:00</lastmod>
+    <lastmod>2021-02-28T00:00:00+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://suoning.github.io/categories/</loc>
-    <lastmod>2021-02-08T00:00:00+08:00</lastmod>
+    <lastmod>2021-02-28T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://suoning.github.io/tags/http/</loc>
+    <lastmod>2021-02-28T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://suoning.github.io/posts/</loc>
+    <lastmod>2021-02-28T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://suoning.github.io/categories/rpc/</loc>
+    <lastmod>2021-02-28T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://suoning.github.io/tags/rpc/</loc>
+    <lastmod>2021-02-28T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://suoning.github.io/posts/rpc-http/</loc>
+    <lastmod>2021-02-28T00:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://suoning.github.io/tags/</loc>
+    <lastmod>2021-02-28T00:00:00+08:00</lastmod>
   </url>
   
   <url>
@@ -24,16 +54,6 @@
   
   <url>
     <loc>https://suoning.github.io/posts/mysql-varchar-%E7%B1%BB%E5%9E%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E9%BB%98%E8%AE%A4%E8%AE%BE%E7%BD%AE-255-/</loc>
-    <lastmod>2021-02-08T00:00:00+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://suoning.github.io/posts/</loc>
-    <lastmod>2021-02-08T00:00:00+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://suoning.github.io/tags/</loc>
     <lastmod>2021-02-08T00:00:00+08:00</lastmod>
   </url>
   
